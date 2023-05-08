@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Fruit Store</title>
+        <link type="text/css" rel="stylesheet" href="style.css">
+        <link href="https://fonts.googleapis.com/css2?family=Salsa&display=swap" rel="stylesheet">
+    </head>
+    <body>
+        <header>
+            <nav>
+                <ul id="ul-header">
+                    <li id="shopping-cart-logo"><a href="index2.html"><img src="shopping-basket-icon.png" alt="shopping-basket-icon" width="40px"></a></li>
+                </ul>
+            </nav>
+            <h1 id="logo"><a href="index.html">Fruit Store</a></h1>
+            <div id="search-field">
+                <input id="userinput" type="search" placeholder="Search fruit" list="optionsSearchFruit" onkeyup="searchFruit()">
+                <datalist id="optionsSearchFruit">
+                    <option value="Banana"></option>
+                    <option value="Grapes"></option>
+                    <option value="Honeydew melon"></option>
+                    <option value="Green apple"></option>
+                    <option value="Lemon"></option>
+                    <option value="Mango"></option>
+                    <option value="Orange"></option>
+                    <option value="Pomegranate"></option>
+                    <option value="Red apple"></option>
+                    <option value="Watermelon"></option>
+                </datalist>
+            </div>
+        </header>
+        <section>
+            <ul id="articles">
+                <li class="item">
+                    <div class="fruitImage"><img alt="red apple" src="red-apple.jpg" width="300px"></img></div>
+                    <div class="fruitText"><p><strong>Red apple</strong></p></div>
+                    <div><p><span id="priceRedApple"></span>$</p></div>
+                    <br>
+                    <div class="amountSelector"><button class="plusMinusButton" id="minusOneRedApple">-</button><p id="countRedApple"></p><button class="plusMinusButton" id="plusOneRedApple">+</button></div>
+                </li>
+                <li class="item">
+                    <div class="fruitImage"><img alt="green apple" src="green-apple.jpg" width="300px"></img></div>
+                    <div class="fruitText"><p><strong>Green apple</strong></p></div>
+                    <div><p><span id="priceGreenApple"></span>$</p></div>
+                    <br>
+                    <div class="amountSelector"><button class="plusMinusButton" id="minusOneGreenApple">-</button><p id="countGreenApple"></p><button class="plusMinusButton" id="plusOneGreenApple">+</button></div>
+                </li>
+                <li class="item">
+                    <div class="fruitImage"><img alt="orange" src="orange.jpg" width="300px"></img></div>
+                    <div class="fruitText"><p><strong>Orange</strong></p></div>
+                    <div><p><span id="priceOrange"></span>$</p></div>
+                    <br>
+                    <div class="amountSelector"><button class="plusMinusButton" id="minusOneOrange">-</button><p id="countOrange"></p><button class="plusMinusButton" id="plusOneOrange">+</button></div>
+                </li>
+                <li class="item">
+                    <div class="fruitImage"><img alt="banana" src="banana.jpg" width="300px"></img></div>
+                    <div class="fruitText"><p><strong>Banana</strong></p></div>
+                    <div><p><span id="priceBanana"></span>$</p></div>
+                    <br>
+                    <div class="amountSelector"><button class="plusMinusButton"  id="minusOneBanana">-</button><p id="countBanana"></p><button class="plusMinusButton" id="plusOneBanana">+</button></div>
+                </li>
+                <li class="item">
+                    <div class="fruitImage"><img alt="grapes" src="grapes.jpg" width="300px"></img></div>
+                    <div class="fruitText"><p><strong>Grapes</strong></p></div>
+                    <div><p><span id="priceGrapes"></span>$</p></div>
+                    <br>
+                    <div class="amountSelector"><button class="plusMinusButton" id="minusOneGrapes">-</button><p id="countGrapes"></p><button class="plusMinusButton" id="plusOneGrapes">+</button></div>
+                </li>
+                <li class="item">
+                    <div class="fruitImage"><img alt="honeydew melon" src="honeydew-melon.jpg" width="300px"></img></div>
+                    <div class="fruitText"><p><strong>Honeydew melon</strong></p></div>
+                    <div><p><span id="priceHoneydewMelon"></span>$</p></div>
+                    <br>
+                    <div class="amountSelector"><button class="plusMinusButton" id="minusOneHoneydewMelon">-</button><p id="countHoneydewMelon"></p><button class="plusMinusButton" id="plusOneHoneydewMelon">+</button></div>
+                </li>
+                <li class="item">
+                    <div class="fruitImage"><img alt="watermelon" src="watermelon.jpg" width="300px"></img></div>
+                    <div class="fruitText"><p><strong>Watermelon</strong></p></div>
+                    <div><p><span id="priceWatermelon"></span>$</p></div>
+                    <br>
+                    <div class="amountSelector"><button class="plusMinusButton" id="minusOneWatermelon">-</button><p id="countWatermelon"></p><button class="plusMinusButton" id="plusOneWatermelon">+</button></div>
+                </li>
+                <li class="item">
+                    <div class="fruitImage"><img alt="lemon" src="lemon.jpg" width="300px"></img></div>
+                    <div class="fruitText"><p><strong>Lemon</strong></p></div>
+                    <div><p><span id="priceLemon"></span>$</p></div>
+                    <br>
+                    <div class="amountSelector"><button class="plusMinusButton" id="minusOneLemon">-</button><p id="countLemon"></p><button class="plusMinusButton" id="plusOneLemon">+</button></div>
+                </li>
+                <li class="item">
+                    <div class="fruitImage"><img alt="mango" src="mango.jpg" width="300px"></img></div>
+                    <div class="fruitText"><p><strong>Mango</strong></p></div>
+                    <div><p><span id="priceMango"></span>$</p></div>
+                    <br>
+                    <div class="amountSelector"><button class="plusMinusButton" id="minusOneMango">-</button><p id="countMango"></p><button class="plusMinusButton" id="plusOneMango">+</button></div>
+                </li>
+                <li class="item">
+                    <div class="fruitImage"><img alt="pomegranate" src="pomegranate.jpg" width="300px"></img></div>
+                    <div class="fruitText"><p><strong>Pomegranate</strong></p></div>
+                    <div><p><span id="pricePomegranate"></span>$</p></div>
+                    <br>
+                    <div class="amountSelector"><button class="plusMinusButton" id="minusOnePomegranate">-</button><p id="countPomegranate"></p><button class="plusMinusButton" id="plusOnePomegranate">+</button></div>
+                </li>
+                <li id="containerNoSearchResult"><p>No fruit found</p></li>
+            </ul>
+            <div class="modalContainer" id="modalContainerFruitAdded">
+                <div class="modalContent">
+                    <p>Fruit has been added to shopping cart</p>
+                </div>
+            </div>
+            <div class="modalContainer" id="modalContainerFruitRemoved">
+                <div class="modalContent">
+                    <p>Fruit has been removed from shopping cart</p>
+                </div>
+            </div>
+            <div id="containerNumberOfFruits">
+                <div id="digitNumberOfFruits">
+                    <p id="textdigitNumberOfFruits"></p>
+                </div>
+            </div>
+        </section>
+        <footer>
+            <ul id="ul-footer">
+                <li><a href="index3.html">Terms of purchase</a></li>
+                <li><a href="index4.html">Customer Support</a></li>
+                <li><a href="index5.html">About Us</a></li>
+            </ul>
+        </footer>
+        <script type="text/javascript" src="script.js"></script>
+    </body>
+</html>
+
+<!--
+Fruit images from: https://unsplash.com/
+Shpping cart image from: https://uxwing.com/
+-->

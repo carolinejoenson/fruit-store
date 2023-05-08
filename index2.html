@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Fruit Store</title>
+        <link type="text/css" rel="stylesheet" href="style.css">
+        <link href="https://fonts.googleapis.com/css2?family=Salsa&display=swap" rel="stylesheet">
+    </head>
+    <body onload="displayTotalNumberOfFruitsInCheckout(); displayTotalPriceInCheckout(); displayRedAppleAddedToShoppingCartInCheckout(); displayGreenAppleAddedToShoppingCartInCheckout(); displayOrangeAddedToShoppingCartInCheckout(); displayBananaAddedToShoppingCartInCheckout(); displayGrapesAddedToShoppingCartInCheckout(); displayHoneydewMelonAddedToShoppingCartInCheckout(); displayWatermelonAddedToShoppingCartInCheckout(); displayLemonAddedToShoppingCartInCheckout(); displayMangoAddedToShoppingCartInCheckout(); displayPomegranateAddedToShoppingCartInCheckout();">
+        <header>
+            <h1 id="logo"><a href="index.html">Fruit Store</a></h1>
+        </header>
+        <section>
+            <div class="containerCheckoutCards">
+                <div class="checkoutBackground">
+                    <h2><span id="totalNumberOfFruits"></span> Fruits</h2>
+                </div>
+            </div>
+            <div class="containerCheckoutCards">
+                <div class="checkoutBackground" id="checkoutBackgroundItems">
+                    <ul>
+                        <li id="redAppleCard">
+                            <div class="fruitCardInCheckout">
+                                <p>Red apple <span id="priceRedAppleInCheckout"></span>$</p>
+                                <div class="amountSelectorInCheckout">
+                                    <button onclick="minusRedAppleInCheckout()" class="plusMinusButtonInCheckout" id="minusOneRedAppleInCheckout">-</button>
+                                    <p class="displayCount" id="countRedAppleInCheckout"></p>
+                                    <button onclick="plusRedAppleInCheckout()" class="plusMinusButtonInCheckout" id="plusOneRedAppleInCheckout">+</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li id="greenAppleCard">
+                            <div class="fruitCardInCheckout">
+                                <p>Green apple <span id="priceGreenAppleInCheckout"></span>$</p>
+                                <div class="amountSelectorInCheckout">
+                                    <button onclick="minusGreenAppleInCheckout()" class="plusMinusButtonInCheckout" id="minusOneGreenAppleInCheckout">-</button>
+                                    <p class="displayCount" id="countGreenAppleInCheckout"></p>
+                                    <button onclick="plusGreenAppleInCheckout()" class="plusMinusButtonInCheckout" id="plusOneGreenAppleInCheckout">+</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li id="orangeCard">
+                            <div class="fruitCardInCheckout">
+                                <p>Orange <span id="priceOrangeInCheckout"></span>$</p>
+                                <div class="amountSelectorInCheckout">
+                                    <button onclick="minusOrangeInCheckout()" class="plusMinusButtonInCheckout" id="minusOneOrangeInCheckout">-</button>
+                                    <p class="displayCount" id="countOrangeInCheckout"></p>
+                                    <button onclick="plusOrangeInCheckout()" class="plusMinusButtonInCheckout" id="plusOneOrangeInCheckout">+</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li id="bananaCard">
+                            <div class="fruitCardInCheckout">
+                                <p>Banana <span id="priceBananaInCheckout"></span>$</p>
+                                <div class="amountSelectorInCheckout">
+                                    <button onclick="minusBananaInCheckout()" class="plusMinusButtonInCheckout" id="minusOneBananaInCheckout">-</button>
+                                    <p class="displayCount" id="countBananaInCheckout"></p>
+                                    <button onclick="plusBananaInCheckout()" class="plusMinusButtonInCheckout" id="plusOneBananaInCheckout">+</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li id="grapesCard">
+                            <div class="fruitCardInCheckout">
+                                <p>Grapes <span id="priceGrapesInCheckout"></span>$</p>
+                                <div class="amountSelectorInCheckout">
+                                    <button onclick="minusGrapesInCheckout()" class="plusMinusButtonInCheckout" id="minusOneGrapesInCheckout">-</button>
+                                    <p class="displayCount" id="countGrapesInCheckout"></p>
+                                    <button onclick="plusGrapesInCheckout()" class="plusMinusButtonInCheckout" id="plusOneGrapesInCheckout">+</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li id="honeydewMelonCard">
+                            <div class="fruitCardInCheckout">
+                                <p>Honeydew melon <span id="priceHoneydewMelonInCheckout"></span>$</p>
+                                <div class="amountSelectorInCheckout">
+                                    <button onclick="minusHoneydewMelonInCheckout()" class="plusMinusButtonInCheckout" id="minusOneHoneydewMelonInCheckout">-</button>
+                                    <p class="displayCount" id="countHoneydewMelonInCheckout"></p>
+                                    <button onclick="plusHoneydewMelonInCheckout()" class="plusMinusButtonInCheckout" id="plusOneHoneydewMelonInCheckout">+</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li id="watermelonCard">
+                            <div class="fruitCardInCheckout">
+                                <p>Watermelon <span id="priceWatermelonInCheckout"></span>$</p>
+                                <div class="amountSelectorInCheckout">
+                                    <button onclick="minusWatermelonInCheckout()" class="plusMinusButtonInCheckout" id="minusOneWatermelonInCheckout">-</button>
+                                    <p class="displayCount" id="countWatermelonInCheckout"></p>
+                                    <button onclick="plusWatermelonInCheckout()" class="plusMinusButtonInCheckout" id="plusOneWatermelonInCheckout">+</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li id="lemonCard">
+                            <div class="fruitCardInCheckout">
+                                <p>Lemon <span id="priceLemonInCheckout"></span>$</p>
+                                <div class="amountSelectorInCheckout">
+                                    <button onclick="minusLemonInCheckout()" class="plusMinusButtonInCheckout" id="minusOneLemonInCheckout">-</button>
+                                    <p class="displayCount" id="countLemonInCheckout"></p>
+                                    <button onclick="plusLemonInCheckout()" class="plusMinusButtonInCheckout" id="plusOneLemonInCheckout">+</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li id="mangoCard">
+                            <div class="fruitCardInCheckout">
+                                <p>Mango <span id="priceMangoInCheckout"></span>$</p>
+                                <div class="amountSelectorInCheckout">
+                                    <button onclick="minusMangoInCheckout()" class="plusMinusButtonInCheckout" id="minusOneMangoInCheckout">-</button>
+                                    <p class="displayCount" id="countMangoInCheckout"></p>
+                                    <button onclick="plusMangoInCheckout()" class="plusMinusButtonInCheckout" id="plusOneMangoInCheckout">+</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li id="pomegranateCard">
+                            <div class="fruitCardInCheckout">
+                                <p>Pomegranate <span id="pricePomegranateInCheckout"></span>$</p>
+                                <div class="amountSelectorInCheckout">
+                                    <button onclick="minusPomegranateInCheckout()" class="plusMinusButtonInCheckout" id="minusOnePomegranateInCheckout">-</button>
+                                    <p class="displayCount" id="countPomegranateInCheckout"></p>
+                                    <button onclick="plusPomegranateInCheckout()" class="plusMinusButtonInCheckout" id="plusOnePomegranateInCheckout">+</button>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="containerCheckoutCards">
+                <div class="checkoutBackground">
+                    <h2>Total <span id="totalCost"></span>$</h2>
+                </div>
+            </div>
+            <div class="containerCheckoutCards">
+                <div class="checkoutBackground">
+                    <button id="checkoutButton">Checkout</button>
+                </div>
+            </div>
+        </section>
+        <footer>
+            <ul id="ul-footer">
+                <li><a href="index3.html">Terms of purchase</a></li>
+                <li><a href="index4.html">Customer Support</a></li>
+                <li><a href="index5.html">About Us</a></li>
+            </ul>
+        </footer>
+        <script type="text/javascript" src="script.js"></script>
+    </body>
+</html>
