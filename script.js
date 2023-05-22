@@ -1,60 +1,70 @@
-//fruit prices
-const allFruitsInStock = [
-    {
-        fruit: "Red apple",
-        price: "1"
-    },
-    {   
-        fruit: "Green apple",
-        price: "1"
-    },
-    {   
-        fruit: "Orange",
-        price: "1.50"
-    },
-    {   
-        fruit: "Banana",
-        price: "1"
-    },
-    {   
-        fruit: "Grapes",
-        price: "2"
-    },
-    {   
-        fruit: "Honeydew melon",
-        price: "3"
-    },
-    {   
-        fruit: "Watermelon",
-        price: "3.50"
-    },
-    {   
-        fruit: "Lemon",
-        price: "0.50"
-    },
-    {   
-        fruit: "Mango",
-        price: "2.50"
-    },
-    {   
-        fruit: "Pomegranate",
-        price: "4"
-    }
-];
-
+let fruitData = {
+    fruits: [
+        {
+            fruit: "red apple",
+            amount: Number(window.localStorage.getItem("redApple"))
+        },
+        {
+            fruit: "green apple",
+            amount: Number(window.localStorage.getItem("greenApple"))
+        },
+        {
+            fruit: "orange",
+            amount: Number(window.localStorage.getItem("orange"))
+        },
+        {
+            fruit: "banana",
+            amount: Number(window.localStorage.getItem("banana"))
+        },
+        {
+            fruit: "grapes",
+            amount: Number(window.localStorage.getItem("grapes"))
+        },
+        {
+            fruit: "honeydew melon",
+            amount: Number(window.localStorage.getItem("honeydewMelon"))
+        },
+        {
+            fruit: "watermelon",
+            amount: Number(window.localStorage.getItem("watermelon"))
+        },
+        {
+            fruit: "lemon",
+            amount: Number(window.localStorage.getItem("lemon"))
+        },
+        {
+            fruit: "mango",
+            amount: Number(window.localStorage.getItem("mango"))
+        },
+        {
+            fruit: "pomegranate",
+            amount: Number(window.localStorage.getItem("pomegranate"))
+        }
+    ]
+}
 
 //display fruit price on first page
-document.getElementById("priceRedApple").textContent = allFruitsInStock[0].price;
-document.getElementById("priceGreenApple").textContent = allFruitsInStock[1].price;
-document.getElementById("priceOrange").textContent = allFruitsInStock[2].price;
-document.getElementById("priceBanana").textContent = allFruitsInStock[3].price;
-document.getElementById("priceGrapes").textContent = allFruitsInStock[4].price;
-document.getElementById("priceHoneydewMelon").textContent = allFruitsInStock[5].price;
-document.getElementById("priceWatermelon").textContent = allFruitsInStock[6].price;
-document.getElementById("priceLemon").textContent = allFruitsInStock[7].price;
-document.getElementById("priceMango").textContent = allFruitsInStock[8].price;
-document.getElementById("pricePomegranate").textContent = allFruitsInStock[9].price;
-
+function fetchPriceOnFirstPage(){
+    fetch("http://localhost:3000/price", {
+        method: "post",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(fruitData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById("priceRedApple").textContent = data[0].price;
+        document.getElementById("priceGreenApple").textContent = data[1].price;
+        document.getElementById("priceOrange").textContent = data[2].price;
+        document.getElementById("priceBanana").textContent = data[3].price;
+        document.getElementById("priceGrapes").textContent = data[4].price;
+        document.getElementById("priceHoneydewMelon").textContent = data[5].price;
+        document.getElementById("priceWatermelon").textContent = data[6].price;
+        document.getElementById("priceLemon").textContent = data[7].price;
+        document.getElementById("priceMango").textContent = data[8].price;
+        document.getElementById("pricePomegranate").textContent = data[9].price;
+    })
+    .catch(err => console.log("error fetch price on first page"))
+}
 
 //remove modal displayed after fruit has been added
 const modalAddFruit = document.getElementById("modalContainerFruitAdded");
@@ -72,6 +82,267 @@ function removeModalFruitRemoved(){
   }, 2000);
 }
 
+//fetch available amount of fruit when adding fruit to shopping cart
+function fetchAmountRedApplesFromServer(){
+    fetch("http://localhost:3000/", {
+        method: "post",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            fruit: "red apple",
+            amount: Number(window.localStorage.getItem("redApple"))
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data === "success"){
+            countRedApple++;
+            displayRedApple.textContent = countRedApple;
+            modalAddFruit.style.display = "block";
+            removeModalFruitAdded();
+            displayNumberOfFruitsInShoppingCart();
+            window.localStorage.setItem("redApple", Number(countRedApple));
+            window.localStorage.setItem("totalNumberOfFruits", Number(countRedApple + countGreenApple + countOrange + countBanana + countGrapes + countHoneydewMelon + countWatermelon + countLemon + countMango + countPomegranate));
+        }
+        else {
+            alert("Out of stock")
+        }
+    })
+}
+
+function fetchAmountGreenApplesFromServer(){
+    fetch("http://localhost:3000/", {
+        method: "post",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            fruit: "green apple",
+            amount: Number(window.localStorage.getItem("greenApple"))
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data === "success"){
+            countGreenApple++;
+            displayGreenApple.textContent = countGreenApple;
+            modalAddFruit.style.display = "block";
+            removeModalFruitAdded();
+            displayNumberOfFruitsInShoppingCart();
+            window.localStorage.setItem("greenApple", Number(countGreenApple));
+            window.localStorage.setItem("totalNumberOfFruits", Number(countRedApple + countGreenApple + countOrange + countBanana + countGrapes + countHoneydewMelon + countWatermelon + countLemon + countMango + countPomegranate));
+        }
+        else {
+            alert("Out of stock")
+        }
+    })
+}
+
+function fetchAmountOrangesFromServer(){
+    fetch("http://localhost:3000/", {
+        method: "post",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            fruit: "orange",
+            amount: Number(window.localStorage.getItem("orange"))
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data === "success"){
+            countOrange++;
+            displayOrange.textContent = countOrange;
+            modalAddFruit.style.display = "block";
+            removeModalFruitAdded();
+            displayNumberOfFruitsInShoppingCart();
+            window.localStorage.setItem("orange", Number(countOrange));
+            window.localStorage.setItem("totalNumberOfFruits", Number(countRedApple + countGreenApple + countOrange + countBanana + countGrapes + countHoneydewMelon + countWatermelon + countLemon + countMango + countPomegranate));
+        }
+        else {
+            alert("Out of stock")
+        }
+    })
+}
+
+function fetchAmountBananasFromServer(){
+    fetch("http://localhost:3000/", {
+        method: "post",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            fruit: "banana",
+            amount: Number(window.localStorage.getItem("banana"))
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data === "success"){
+            countBanana++;
+            displayBanana.textContent = countBanana;
+            modalAddFruit.style.display = "block";
+            removeModalFruitAdded();
+            displayNumberOfFruitsInShoppingCart();
+            window.localStorage.setItem("banana", Number(countBanana));
+            window.localStorage.setItem("totalNumberOfFruits", Number(countRedApple + countGreenApple + countOrange + countBanana + countGrapes + countHoneydewMelon + countWatermelon + countLemon + countMango + countPomegranate));
+        }
+        else {
+            alert("Out of stock")
+        }
+    })
+}
+
+function fetchAmountGrapesFromServer(){
+    fetch("http://localhost:3000/", {
+        method: "post",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            fruit: "grapes",
+            amount: Number(window.localStorage.getItem("grapes"))
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data === "success"){
+            countGrapes++;
+            displayGrapes.textContent = countGrapes;
+            modalAddFruit.style.display = "block";
+            removeModalFruitAdded();
+            displayNumberOfFruitsInShoppingCart();
+            window.localStorage.setItem("grapes", Number(countGrapes));
+            window.localStorage.setItem("totalNumberOfFruits", Number(countRedApple + countGreenApple + countOrange + countBanana + countGrapes + countHoneydewMelon + countWatermelon + countLemon + countMango + countPomegranate));
+        }
+        else {
+            alert("Out of stock")
+        }
+    })
+}
+
+function fetchAmountHoneydewMelonFromServer(){
+    fetch("http://localhost:3000/", {
+        method: "post",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            fruit: "honeydew melon",
+            amount: Number(window.localStorage.getItem("honeydewMelon"))
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data === "success"){
+            countHoneydewMelon++;
+            displayHoneydewMelon.textContent = countHoneydewMelon;
+            modalAddFruit.style.display = "block";
+            removeModalFruitAdded();
+            displayNumberOfFruitsInShoppingCart();
+            window.localStorage.setItem("honeydewMelon", Number(countHoneydewMelon));
+            window.localStorage.setItem("totalNumberOfFruits", Number(countRedApple + countGreenApple + countOrange + countBanana + countGrapes + countHoneydewMelon + countWatermelon + countLemon + countMango + countPomegranate));
+        }
+        else {
+            alert("Out of stock")
+        }
+    })
+}
+
+function fetchAmountWatermelonFromServer(){
+    fetch("http://localhost:3000/", {
+        method: "post",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(            {
+            fruit: "watermelon",
+            amount: Number(window.localStorage.getItem("watermelon"))
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data === "success"){
+            countWatermelon++;
+            displayWatermelon.textContent = countWatermelon;
+            modalAddFruit.style.display = "block";
+            removeModalFruitAdded();
+            displayNumberOfFruitsInShoppingCart();
+            window.localStorage.setItem("watermelon", Number(countWatermelon));
+            window.localStorage.setItem("totalNumberOfFruits", Number(countRedApple + countGreenApple + countOrange + countBanana + countGrapes + countHoneydewMelon + countWatermelon + countLemon + countMango + countPomegranate));
+        }
+        else {
+            alert("Out of stock")
+        }
+    })
+}
+
+function fetchAmountLemonFromServer(){
+    fetch("http://localhost:3000/", {
+        method: "post",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(          {
+            fruit: "lemon",
+            amount: Number(window.localStorage.getItem("lemon"))
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data === "success"){
+            countLemon++;
+            displayLemon.textContent = countLemon;
+            modalAddFruit.style.display = "block";
+            removeModalFruitAdded();
+            displayNumberOfFruitsInShoppingCart();
+            window.localStorage.setItem("lemon", Number(countLemon));
+            window.localStorage.setItem("totalNumberOfFruits", Number(countRedApple + countGreenApple + countOrange + countBanana + countGrapes + countHoneydewMelon + countWatermelon + countLemon + countMango + countPomegranate));
+        }
+        else {
+            alert("Out of stock")
+        }
+    })
+}
+
+function fetchAmountMangoFromServer(){
+    fetch("http://localhost:3000/", {
+        method: "post",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(            {
+            fruit: "mango",
+            amount: Number(window.localStorage.getItem("mango"))
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data === "success"){
+            countMango++;
+            displayMango.textContent = countMango;
+            modalAddFruit.style.display = "block";
+            removeModalFruitAdded();
+            displayNumberOfFruitsInShoppingCart();
+            window.localStorage.setItem("mango", Number(countMango));
+            window.localStorage.setItem("totalNumberOfFruits", Number(countRedApple + countGreenApple + countOrange + countBanana + countGrapes + countHoneydewMelon + countWatermelon + countLemon + countMango + countPomegranate));
+        }
+        else {
+            alert("Out of stock")
+        }
+    })
+}
+
+function fetchAmountPomegranateFromServer(){
+    fetch("http://localhost:3000/", {
+        method: "post",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(            {
+            fruit: "pomegranate",
+            amount: Number(window.localStorage.getItem("pomegranate"))
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data === "success"){
+            countPomegranate++;
+            displayPomegranate.textContent = countPomegranate;
+            modalAddFruit.style.display = "block";
+            removeModalFruitAdded();
+            displayNumberOfFruitsInShoppingCart();
+            window.localStorage.setItem("pomegranate", Number(countPomegranate));
+            window.localStorage.setItem("totalNumberOfFruits", Number(countRedApple + countGreenApple + countOrange + countBanana + countGrapes + countHoneydewMelon + countWatermelon + countLemon + countMango + countPomegranate));
+        }
+        else {
+            alert("Out of stock")
+        }
+    })
+}
+
 
 //change amount of a fruit and store the number in localStorage, display modal
 //red apple
@@ -82,13 +353,7 @@ let countRedApple = 0;
 displayRedApple.textContent = countRedApple;
 
 plusRedApple.addEventListener("click", function(){
-    countRedApple++;
-    displayRedApple.textContent = countRedApple;
-    modalAddFruit.style.display = "block";
-    removeModalFruitAdded();
-    displayNumberOfFruitsInShoppingCart();
-    window.localStorage.setItem("redApple", Number(countRedApple));
-    window.localStorage.setItem("totalNumberOfFruits", Number(countRedApple + countGreenApple + countOrange + countBanana + countGrapes + countHoneydewMelon + countWatermelon + countLemon + countMango + countPomegranate));
+    fetchAmountRedApplesFromServer();
 });
 
 minusRedApple.addEventListener("click", function(){
@@ -111,13 +376,7 @@ let countGreenApple = 0;
 displayGreenApple.textContent = countGreenApple;
 
 plusGreenApple.addEventListener("click", function(){
-    countGreenApple++;
-    displayGreenApple.textContent = countGreenApple;
-    modalAddFruit.style.display = "block";
-    removeModalFruitAdded();
-    displayNumberOfFruitsInShoppingCart();
-    window.localStorage.setItem("greenApple", Number(countGreenApple));
-    window.localStorage.setItem("totalNumberOfFruits", Number(countRedApple + countGreenApple + countOrange + countBanana + countGrapes + countHoneydewMelon + countWatermelon + countLemon + countMango + countPomegranate));
+    fetchAmountGreenApplesFromServer();
 });
 
 minusGreenApple.addEventListener("click", function(){
@@ -140,13 +399,7 @@ let countOrange = 0;
 displayOrange.textContent = countOrange;
 
 plusOrange.addEventListener("click", function(){
-    countOrange++;
-    displayOrange.textContent = countOrange;
-    modalAddFruit.style.display = "block";
-    removeModalFruitAdded();
-    displayNumberOfFruitsInShoppingCart();
-    window.localStorage.setItem("orange", Number(countOrange));
-    window.localStorage.setItem("totalNumberOfFruits", Number(countRedApple + countGreenApple + countOrange + countBanana + countGrapes + countHoneydewMelon + countWatermelon + countLemon + countMango + countPomegranate));
+    fetchAmountOrangesFromServer();
 });
 
 minusOrange.addEventListener("click", function(){
@@ -169,13 +422,7 @@ let countBanana = 0;
 displayBanana.textContent = countBanana;
 
 plusBanana.addEventListener("click", function(){
-    countBanana++;
-    displayBanana.textContent = countBanana;
-    modalAddFruit.style.display = "block";
-    removeModalFruitAdded();
-    displayNumberOfFruitsInShoppingCart();
-    window.localStorage.setItem("banana", Number(countBanana));
-    window.localStorage.setItem("totalNumberOfFruits", Number(countRedApple + countGreenApple + countOrange + countBanana + countGrapes + countHoneydewMelon + countWatermelon + countLemon + countMango + countPomegranate));
+    fetchAmountBananasFromServer()
 });
 
 minusBanana.addEventListener("click", function(){
@@ -198,13 +445,7 @@ let countGrapes = 0;
 displayGrapes.textContent = countGrapes;
 
 plusGrapes.addEventListener("click", function(){
-    countGrapes++;
-    displayGrapes.textContent = countGrapes;
-    modalAddFruit.style.display = "block";
-    removeModalFruitAdded();
-    displayNumberOfFruitsInShoppingCart();
-    window.localStorage.setItem("grapes", Number(countGrapes));
-    window.localStorage.setItem("totalNumberOfFruits", Number(countRedApple + countGreenApple + countOrange + countBanana + countGrapes + countHoneydewMelon + countWatermelon + countLemon + countMango + countPomegranate));
+    fetchAmountGrapesFromServer();
 });
 
 minusGrapes.addEventListener("click", function(){
@@ -227,13 +468,7 @@ let countHoneydewMelon = 0;
 displayHoneydewMelon.textContent = countHoneydewMelon;
 
 plusHoneydewMelon.addEventListener("click", function(){
-    countHoneydewMelon++;
-    displayHoneydewMelon.textContent = countHoneydewMelon;
-    modalAddFruit.style.display = "block";
-    removeModalFruitAdded();
-    displayNumberOfFruitsInShoppingCart();
-    window.localStorage.setItem("honeydewMelon", Number(countHoneydewMelon));
-    window.localStorage.setItem("totalNumberOfFruits", Number(countRedApple + countGreenApple + countOrange + countBanana + countGrapes + countHoneydewMelon + countWatermelon + countLemon + countMango + countPomegranate));
+    fetchAmountHoneydewMelonFromServer();
 });
 
 minusHoneydewMelon.addEventListener("click", function(){
@@ -256,13 +491,7 @@ let countWatermelon = 0;
 displayWatermelon.textContent = countWatermelon;
 
 plusWatermelon.addEventListener("click", function(){
-    countWatermelon++;
-    displayWatermelon.textContent = countWatermelon;
-    modalAddFruit.style.display = "block";
-    removeModalFruitAdded();
-    displayNumberOfFruitsInShoppingCart();
-    window.localStorage.setItem("watermelon", Number(countWatermelon));
-    window.localStorage.setItem("totalNumberOfFruits", Number(countRedApple + countGreenApple + countOrange + countBanana + countGrapes + countHoneydewMelon + countWatermelon + countLemon + countMango + countPomegranate));
+    fetchAmountWatermelonFromServer();
 });
 
 minusWatermelon.addEventListener("click", function(){
@@ -285,13 +514,7 @@ let countLemon = 0;
 displayLemon.textContent = countLemon;
 
 plusLemon.addEventListener("click", function(){
-    countLemon++;
-    displayLemon.textContent = countLemon;
-    modalAddFruit.style.display = "block";
-    removeModalFruitAdded();
-    displayNumberOfFruitsInShoppingCart();
-    window.localStorage.setItem("lemon", Number(countLemon));
-    window.localStorage.setItem("totalNumberOfFruits", Number(countRedApple + countGreenApple + countOrange + countBanana + countGrapes + countHoneydewMelon + countWatermelon + countLemon + countMango + countPomegranate));
+    fetchAmountLemonFromServer();
 });
 
 minusLemon.addEventListener("click", function(){
@@ -314,13 +537,7 @@ let countMango = 0;
 displayMango.textContent = countMango;
 
 plusMango.addEventListener("click", function(){
-    countMango++;
-    displayMango.textContent = countMango;
-    modalAddFruit.style.display = "block";
-    removeModalFruitAdded();
-    displayNumberOfFruitsInShoppingCart();
-    window.localStorage.setItem("mango", Number(countMango));
-    window.localStorage.setItem("totalNumberOfFruits", Number(countRedApple + countGreenApple + countOrange + countBanana + countGrapes + countHoneydewMelon + countWatermelon + countLemon + countMango + countPomegranate));
+    fetchAmountMangoFromServer();
 });
 
 minusMango.addEventListener("click", function(){
@@ -343,13 +560,7 @@ let countPomegranate = 0;
 displayPomegranate.textContent = countPomegranate;
 
 plusPomegranate.addEventListener("click", function(){
-    countPomegranate++;
-    displayPomegranate.textContent = countPomegranate;
-    modalAddFruit.style.display = "block";
-    removeModalFruitAdded();
-    displayNumberOfFruitsInShoppingCart();
-    window.localStorage.setItem("pomegranate", Number(countPomegranate));
-    window.localStorage.setItem("totalNumberOfFruits", Number(countRedApple + countGreenApple + countOrange + countBanana + countGrapes + countHoneydewMelon + countWatermelon + countLemon + countMango + countPomegranate));
+    fetchAmountPomegranateFromServer();
 });
 
 minusPomegranate.addEventListener("click", function(){
@@ -454,14 +665,12 @@ function displayTotalNumberOfFruitsInCheckout(){
 }
 
 
-//display item added to shopping cart and its' price and amount in checkout
+//display item added to shopping cart, the price and amount in checkout
 function displayRedAppleAddedToShoppingCartInCheckout(){
     let numberOfRedApplesInCartForCard = Number(window.localStorage.getItem("redApple"));
-    const priceRedAppleInNumberForCard = Number(allFruitsInStock[0].price);
     const displayRedAppleCard = document.getElementById("redAppleCard");
     if (numberOfRedApplesInCartForCard > 0){
         document.getElementById("countRedAppleInCheckout").textContent = numberOfRedApplesInCartForCard;
-        document.getElementById("priceRedAppleInCheckout").textContent = priceRedAppleInNumberForCard;
         displayRedAppleCard.style.display = "flex";
     }
     else if (numberOfRedApplesInCartForCard == 0){
@@ -471,11 +680,9 @@ function displayRedAppleAddedToShoppingCartInCheckout(){
 
 function displayGreenAppleAddedToShoppingCartInCheckout(){
     let numberOfGreenApplesInCartForCard = Number(window.localStorage.getItem("greenApple"));
-    const priceGreenAppleInNumberForCard = Number(allFruitsInStock[1].price);
     const displayGreenAppleCard = document.getElementById("greenAppleCard");
     if (numberOfGreenApplesInCartForCard > 0){
         document.getElementById("countGreenAppleInCheckout").textContent = numberOfGreenApplesInCartForCard;
-        document.getElementById("priceGreenAppleInCheckout").textContent = priceGreenAppleInNumberForCard;
         displayGreenAppleCard.style.display = "flex";
     }
     else if (numberOfGreenApplesInCartForCard == 0){
@@ -485,11 +692,9 @@ function displayGreenAppleAddedToShoppingCartInCheckout(){
 
 function displayOrangeAddedToShoppingCartInCheckout(){
     let numberOfOrangeInCartForCard = Number(window.localStorage.getItem("orange"));
-    const priceOrangeInNumberForCard = Number(allFruitsInStock[2].price);
     const displayOrangeCard = document.getElementById("orangeCard");
     if (numberOfOrangeInCartForCard > 0){
         document.getElementById("countOrangeInCheckout").textContent = numberOfOrangeInCartForCard;
-        document.getElementById("priceOrangeInCheckout").textContent = priceOrangeInNumberForCard;
         displayOrangeCard.style.display = "flex";
     }
     else if (numberOfOrangeInCartForCard == 0){
@@ -499,11 +704,9 @@ function displayOrangeAddedToShoppingCartInCheckout(){
 
 function displayBananaAddedToShoppingCartInCheckout(){
     let numberOfBananaInCartForCard = Number(window.localStorage.getItem("banana"));
-    const priceBananaInNumberForCard = Number(allFruitsInStock[3].price);
     const displayBananaCard = document.getElementById("bananaCard");
     if (numberOfBananaInCartForCard > 0){
         document.getElementById("countBananaInCheckout").textContent = numberOfBananaInCartForCard;
-        document.getElementById("priceBananaInCheckout").textContent = priceBananaInNumberForCard;
         displayBananaCard.style.display = "flex";
     }
     else if (numberOfBananaInCartForCard == 0){
@@ -513,11 +716,9 @@ function displayBananaAddedToShoppingCartInCheckout(){
 
 function displayGrapesAddedToShoppingCartInCheckout(){
     let numberOfGrapesInCartForCard = Number(window.localStorage.getItem("grapes"));
-    const priceGrapesInNumberForCard = Number(allFruitsInStock[4].price);
     const displayGrapesCard = document.getElementById("grapesCard");
     if (numberOfGrapesInCartForCard > 0){
         document.getElementById("countGrapesInCheckout").textContent = numberOfGrapesInCartForCard;
-        document.getElementById("priceGrapesInCheckout").textContent = priceGrapesInNumberForCard;
         displayGrapesCard.style.display = "flex";
     }
     else if (numberOfGrapesInCartForCard == 0){
@@ -527,11 +728,9 @@ function displayGrapesAddedToShoppingCartInCheckout(){
 
 function displayHoneydewMelonAddedToShoppingCartInCheckout(){
     let numberOfHoneydewMelonInCartForCard = Number(window.localStorage.getItem("honeydewMelon"));
-    const priceHoneydewMelonInNumberForCard = Number(allFruitsInStock[5].price);
     const displayHoneydewMelonCard = document.getElementById("honeydewMelonCard");
     if (numberOfHoneydewMelonInCartForCard > 0){
         document.getElementById("countHoneydewMelonInCheckout").textContent = numberOfHoneydewMelonInCartForCard;
-        document.getElementById("priceHoneydewMelonInCheckout").textContent = priceHoneydewMelonInNumberForCard;
         displayHoneydewMelonCard.style.display = "flex";
     }
     else if (numberOfHoneydewMelonInCartForCard == 0){
@@ -541,11 +740,9 @@ function displayHoneydewMelonAddedToShoppingCartInCheckout(){
 
 function displayWatermelonAddedToShoppingCartInCheckout(){
     let numberOfWatermelonInCartForCard = Number(window.localStorage.getItem("watermelon"));
-    const priceWatermelonInNumberForCard = Number(allFruitsInStock[6].price);
     const displayWatermelonCard = document.getElementById("watermelonCard");
     if (numberOfWatermelonInCartForCard > 0){
         document.getElementById("countWatermelonInCheckout").textContent = numberOfWatermelonInCartForCard;
-        document.getElementById("priceWatermelonInCheckout").textContent = priceWatermelonInNumberForCard;
         displayWatermelonCard.style.display = "flex";
     }
     else if (numberOfWatermelonInCartForCard == 0){
@@ -555,11 +752,9 @@ function displayWatermelonAddedToShoppingCartInCheckout(){
 
 function displayLemonAddedToShoppingCartInCheckout(){
     let numberOfLemonInCartForCard = Number(window.localStorage.getItem("lemon"));
-    const priceLemonInNumberForCard = Number(allFruitsInStock[7].price);
     const displayLemonCard = document.getElementById("lemonCard");
     if (numberOfLemonInCartForCard > 0){
         document.getElementById("countLemonInCheckout").textContent = numberOfLemonInCartForCard;
-        document.getElementById("priceLemonInCheckout").textContent = priceLemonInNumberForCard;
         displayLemonCard.style.display = "flex";
     }
     else if (numberOfLemonInCartForCard == 0){
@@ -569,11 +764,9 @@ function displayLemonAddedToShoppingCartInCheckout(){
 
 function displayMangoAddedToShoppingCartInCheckout(){
     let numberOfMangoInCartForCard = Number(window.localStorage.getItem("mango"));
-    const priceMangoInNumberForCard = Number(allFruitsInStock[8].price);
     const displayMangoCard = document.getElementById("mangoCard");
     if (numberOfMangoInCartForCard > 0){
         document.getElementById("countMangoInCheckout").textContent = numberOfMangoInCartForCard;
-        document.getElementById("priceMangoInCheckout").textContent = priceMangoInNumberForCard;
         displayMangoCard.style.display = "flex";
     }
     else if (numberOfMangoInCartForCard == 0){
@@ -583,11 +776,9 @@ function displayMangoAddedToShoppingCartInCheckout(){
 
 function displayPomegranateAddedToShoppingCartInCheckout(){
     let numberOfPomegranateInCartForCard = Number(window.localStorage.getItem("pomegranate"));
-    const pricePomegranateInNumberForCard = Number(allFruitsInStock[9].price);
     const displayPomegranateCard = document.getElementById("pomegranateCard");
     if (numberOfPomegranateInCartForCard > 0){
         document.getElementById("countPomegranateInCheckout").textContent = numberOfPomegranateInCartForCard;
-        document.getElementById("pricePomegranateInCheckout").textContent = pricePomegranateInNumberForCard;
         displayPomegranateCard.style.display = "flex";
     }
     else if (numberOfPomegranateInCartForCard == 0){
@@ -597,16 +788,280 @@ function displayPomegranateAddedToShoppingCartInCheckout(){
 
 
 //change amount of a fruit added to shopping cart in checkout
+function fetchAvailableAmountRedApplesFromServerInCheckOut(){
+    fetch("http://localhost:3000/addfruitincheckout", {
+        method: "post",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            fruit: "red apple",
+            amount: Number(window.localStorage.getItem("redApple"))
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data === "success"){
+            const displayRedAppleInCheckout = document.getElementById("countRedAppleInCheckout");
+            let countRedAppleInCheckout = Number(window.localStorage.getItem("redApple"));
+            countRedAppleInCheckout++;
+            displayRedAppleInCheckout.textContent = countRedAppleInCheckout;
+            window.localStorage.setItem("redApple", Number(countRedAppleInCheckout));
+            window.localStorage.setItem("totalNumberOfFruits", countRedAppleInCheckout + Number(window.localStorage.getItem("greenApple")) + Number(window.localStorage.getItem("orange")) + Number(window.localStorage.getItem("banana")) + Number(window.localStorage.getItem("grapes")) + Number(window.localStorage.getItem("honeydewMelon")) + Number(window.localStorage.getItem("watermelon")) + Number(window.localStorage.getItem("lemon")) + Number(window.localStorage.getItem("mango")) + Number(window.localStorage.getItem("pomegranate")));
+            displayTotalNumberOfFruitsInCheckout();
+        }
+        else{
+           alert("Out of stock")
+        }
+    })
+    .catch(err => console.log("error"))
+}
+
+function fetchAvailableAmountGreenApplesFromServerInCheckOut(){
+    fetch("http://localhost:3000/addfruitincheckout", {
+        method: "post",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            fruit: "green apple",
+            amount: Number(window.localStorage.getItem("greenApple"))
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data === "success"){
+            const displayGreenAppleInCheckout = document.getElementById("countGreenAppleInCheckout");
+            let countGreenAppleInCheckout = Number(window.localStorage.getItem("greenApple"));
+            countGreenAppleInCheckout++;
+            displayGreenAppleInCheckout.textContent = countGreenAppleInCheckout;
+            window.localStorage.setItem("greenApple", Number(countGreenAppleInCheckout));
+            window.localStorage.setItem("totalNumberOfFruits", Number(window.localStorage.getItem("redApple")) + countGreenAppleInCheckout + Number(window.localStorage.getItem("orange")) + Number(window.localStorage.getItem("banana")) + Number(window.localStorage.getItem("grapes")) + Number(window.localStorage.getItem("honeydewMelon")) + Number(window.localStorage.getItem("watermelon")) + Number(window.localStorage.getItem("lemon")) + Number(window.localStorage.getItem("mango")) + Number(window.localStorage.getItem("pomegranate")));    
+            displayTotalNumberOfFruitsInCheckout();
+        }
+        else{
+           alert("Out of stock")
+        }
+    })
+    .catch(err => console.log("error"))
+}
+
+function fetchAvailableAmountOrangesFromServerInCheckOut(){
+    fetch("http://localhost:3000/addfruitincheckout", {
+        method: "post",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            fruit: "orange",
+            amount: Number(window.localStorage.getItem("orange"))
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data === "success"){
+            const displayOrangeInCheckout = document.getElementById("countOrangeInCheckout");
+            let countOrangeInCheckout = Number(window.localStorage.getItem("orange"));
+            countOrangeInCheckout++;
+            displayOrangeInCheckout.textContent = countOrangeInCheckout;
+            window.localStorage.setItem("orange", Number(countOrangeInCheckout));
+            window.localStorage.setItem("totalNumberOfFruits", Number(window.localStorage.getItem("redApple")) + Number(window.localStorage.getItem("greenApple")) + countOrangeInCheckout + Number(window.localStorage.getItem("banana")) + Number(window.localStorage.getItem("grapes")) + Number(window.localStorage.getItem("honeydewMelon")) + Number(window.localStorage.getItem("watermelon")) + Number(window.localStorage.getItem("lemon")) + Number(window.localStorage.getItem("mango")) + Number(window.localStorage.getItem("pomegranate")));    
+            displayTotalNumberOfFruitsInCheckout();
+        }
+        else{
+           alert("Out of stock")
+        }
+    })
+    .catch(err => console.log("error"))
+}
+
+function fetchAvailableAmountBananasFromServerInCheckOut(){
+    fetch("http://localhost:3000/addfruitincheckout", {
+        method: "post",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            fruit: "banana",
+            amount: Number(window.localStorage.getItem("banana"))
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data === "success"){
+            const displayBananaInCheckout = document.getElementById("countBananaInCheckout");
+            let countBananaInCheckout = Number(window.localStorage.getItem("banana"));
+            countBananaInCheckout++;
+            displayBananaInCheckout.textContent = countBananaInCheckout;
+            window.localStorage.setItem("banana", Number(countBananaInCheckout));
+            window.localStorage.setItem("totalNumberOfFruits", Number(window.localStorage.getItem("redApple")) + Number(window.localStorage.getItem("greenApple")) + Number(window.localStorage.getItem("orange")) + countBananaInCheckout + Number(window.localStorage.getItem("grapes")) + Number(window.localStorage.getItem("honeydewMelon")) + Number(window.localStorage.getItem("watermelon")) + Number(window.localStorage.getItem("lemon")) + Number(window.localStorage.getItem("mango")) + Number(window.localStorage.getItem("pomegranate")));    
+            displayTotalNumberOfFruitsInCheckout();
+        }
+        else{
+           alert("Out of stock")
+        }
+    })
+    .catch(err => console.log("error"))
+}
+
+function fetchAvailableAmountGrapesFromServerInCheckOut(){
+    fetch("http://localhost:3000/addfruitincheckout", {
+        method: "post",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            fruit: "grapes",
+            amount: Number(window.localStorage.getItem("grapes"))
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data === "success"){
+            const displayGrapesInCheckout = document.getElementById("countGrapesInCheckout");
+            let countGrapesInCheckout = Number(window.localStorage.getItem("grapes"));
+            countGrapesInCheckout++;
+            displayGrapesInCheckout.textContent = countGrapesInCheckout;
+            window.localStorage.setItem("grapes", Number(countGrapesInCheckout));
+            window.localStorage.setItem("totalNumberOfFruits", Number(window.localStorage.getItem("redApple")) + Number(window.localStorage.getItem("greenApple")) + Number(window.localStorage.getItem("orange")) + Number(window.localStorage.getItem("banana")) + countGrapesInCheckout + Number(window.localStorage.getItem("honeydewMelon")) + Number(window.localStorage.getItem("watermelon")) + Number(window.localStorage.getItem("lemon")) + Number(window.localStorage.getItem("mango")) + Number(window.localStorage.getItem("pomegranate")));    
+            displayTotalNumberOfFruitsInCheckout();
+        }
+        else{
+           alert("Out of stock")
+        }
+    })
+    .catch(err => console.log("error"))
+}
+
+function fetchAvailableAmountHoneydewMelonsFromServerInCheckOut(){
+    fetch("http://localhost:3000/addfruitincheckout", {
+        method: "post",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            fruit: "honeydew melon",
+            amount: Number(window.localStorage.getItem("honeydewMelon"))
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data === "success"){
+            const displayHoneydewMelonInCheckout = document.getElementById("countHoneydewMelonInCheckout");
+            let countHoneydewMelonInCheckout = Number(window.localStorage.getItem("honeydewMelon"));
+            countHoneydewMelonInCheckout++;
+            displayHoneydewMelonInCheckout.textContent = countHoneydewMelonInCheckout;
+            window.localStorage.setItem("honeydewMelon", Number(countHoneydewMelonInCheckout));
+            window.localStorage.setItem("totalNumberOfFruits", Number(window.localStorage.getItem("redApple")) + Number(window.localStorage.getItem("greenApple")) + Number(window.localStorage.getItem("orange")) + Number(window.localStorage.getItem("banana")) + Number(window.localStorage.getItem("grapes")) + countHoneydewMelonInCheckout + Number(window.localStorage.getItem("watermelon")) + Number(window.localStorage.getItem("lemon")) + Number(window.localStorage.getItem("mango")) + Number(window.localStorage.getItem("pomegranate")));    
+            displayTotalNumberOfFruitsInCheckout();
+        }
+        else{
+           alert("Out of stock")
+        }
+    })
+    .catch(err => console.log("error"))
+}
+
+function fetchAvailableAmountWatermelonsFromServerInCheckOut(){
+    fetch("http://localhost:3000/addfruitincheckout", {
+        method: "post",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            fruit: "watermelon",
+            amount: Number(window.localStorage.getItem("watermelon"))
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data === "success"){
+            const displayWatermelonInCheckout = document.getElementById("countWatermelonInCheckout");
+            let countWatermelonInCheckout = Number(window.localStorage.getItem("watermelon"));
+            countWatermelonInCheckout++;
+            displayWatermelonInCheckout.textContent = countWatermelonInCheckout;
+            window.localStorage.setItem("watermelon", Number(countWatermelonInCheckout));
+            window.localStorage.setItem("totalNumberOfFruits", Number(window.localStorage.getItem("redApple")) + Number(window.localStorage.getItem("greenApple")) + Number(window.localStorage.getItem("orange")) + Number(window.localStorage.getItem("banana")) + Number(window.localStorage.getItem("grapes")) + Number(window.localStorage.getItem("honeydewMelon")) + countWatermelonInCheckout + Number(window.localStorage.getItem("lemon")) + Number(window.localStorage.getItem("mango")) + Number(window.localStorage.getItem("pomegranate")));    
+            displayTotalNumberOfFruitsInCheckout();
+        }
+        else{
+           alert("Out of stock")
+        }
+    })
+    .catch(err => console.log("error"))
+}
+
+function fetchAvailableAmountLemonsFromServerInCheckOut(){
+    fetch("http://localhost:3000/addfruitincheckout", {
+        method: "post",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            fruit: "lemon",
+            amount: Number(window.localStorage.getItem("lemon"))
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data === "success"){
+            const displayLemonInCheckout = document.getElementById("countLemonInCheckout");
+            let countLemonInCheckout = Number(window.localStorage.getItem("lemon"));
+            countLemonInCheckout++;
+            displayLemonInCheckout.textContent = countLemonInCheckout;
+            window.localStorage.setItem("lemon", Number(countLemonInCheckout));
+            window.localStorage.setItem("totalNumberOfFruits", Number(window.localStorage.getItem("redApple")) + Number(window.localStorage.getItem("greenApple")) + Number(window.localStorage.getItem("orange")) + Number(window.localStorage.getItem("banana")) + Number(window.localStorage.getItem("grapes")) + Number(window.localStorage.getItem("honeydewMelon")) + Number(window.localStorage.getItem("watermelon")) + countLemonInCheckout + Number(window.localStorage.getItem("mango")) + Number(window.localStorage.getItem("pomegranate")));    
+            displayTotalNumberOfFruitsInCheckout();
+        }
+        else{
+           alert("Out of stock")
+        }
+    })
+    .catch(err => console.log("error"))
+}
+
+function fetchAvailableAmountMangosFromServerInCheckOut(){
+    fetch("http://localhost:3000/addfruitincheckout", {
+        method: "post",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            fruit: "mango",
+            amount: Number(window.localStorage.getItem("mango"))
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data === "success"){
+            const displayMangoInCheckout = document.getElementById("countMangoInCheckout");
+            let countMangoInCheckout = Number(window.localStorage.getItem("mango"));
+            countMangoInCheckout++;
+            displayMangoInCheckout.textContent = countMangoInCheckout;
+            window.localStorage.setItem("mango", Number(countMangoInCheckout));
+            window.localStorage.setItem("totalNumberOfFruits", Number(window.localStorage.getItem("redApple")) + Number(window.localStorage.getItem("greenApple")) + Number(window.localStorage.getItem("orange")) + Number(window.localStorage.getItem("banana")) + Number(window.localStorage.getItem("grapes")) + Number(window.localStorage.getItem("honeydewMelon")) + Number(window.localStorage.getItem("watermelon")) + Number(window.localStorage.getItem("lemon")) + countMangoInCheckout + Number(window.localStorage.getItem("pomegranate")));    
+            displayTotalNumberOfFruitsInCheckout();
+        }
+        else{
+           alert("Out of stock")
+        }
+    })
+    .catch(err => console.log("error"))
+}
+
+function fetchAvailableAmountPomegranatesFromServerInCheckOut(){
+    fetch("http://localhost:3000/addfruitincheckout", {
+        method: "post",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            fruit: "pomegranate",
+            amount: Number(window.localStorage.getItem("pomegranate"))
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data === "success"){
+            const displayPomegranateInCheckout = document.getElementById("countPomegranateInCheckout");
+            let countPomegranateInCheckout = Number(window.localStorage.getItem("pomegranate"));
+            countPomegranateInCheckout++;
+            displayPomegranateInCheckout.textContent = countPomegranateInCheckout;
+            window.localStorage.setItem("pomegranate", Number(countPomegranateInCheckout));
+            window.localStorage.setItem("totalNumberOfFruits", Number(window.localStorage.getItem("redApple")) + Number(window.localStorage.getItem("greenApple")) + Number(window.localStorage.getItem("orange")) + Number(window.localStorage.getItem("banana")) + Number(window.localStorage.getItem("grapes")) + Number(window.localStorage.getItem("honeydewMelon")) + Number(window.localStorage.getItem("watermelon")) + Number(window.localStorage.getItem("lemon")) + Number(window.localStorage.getItem("mango")) + countPomegranateInCheckout);    
+            displayTotalNumberOfFruitsInCheckout();
+        }
+        else{
+           alert("Out of stock")
+        }
+    })
+    .catch(err => console.log("error"))
+}
+
 //red apple
 function plusRedAppleInCheckout(){
-    const displayRedAppleInCheckout = document.getElementById("countRedAppleInCheckout");
-    let countRedAppleInCheckout = Number(window.localStorage.getItem("redApple"));
-    countRedAppleInCheckout++;
-    displayRedAppleInCheckout.textContent = countRedAppleInCheckout;
-    window.localStorage.setItem("redApple", Number(countRedAppleInCheckout));
-    window.localStorage.setItem("totalNumberOfFruits", countRedAppleInCheckout + Number(window.localStorage.getItem("greenApple")) + Number(window.localStorage.getItem("orange")) + Number(window.localStorage.getItem("banana")) + Number(window.localStorage.getItem("grapes")) + Number(window.localStorage.getItem("honeydewMelon")) + Number(window.localStorage.getItem("watermelon")) + Number(window.localStorage.getItem("lemon")) + Number(window.localStorage.getItem("mango")) + Number(window.localStorage.getItem("pomegranate")));
-    displayTotalNumberOfFruitsInCheckout();
-    displayTotalPriceInCheckout();
+    fetchAvailableAmountRedApplesFromServerInCheckOut();
+    fetchPriceOnCheckout();
 }
 
 function minusRedAppleInCheckout(){
@@ -618,29 +1073,14 @@ function minusRedAppleInCheckout(){
         window.localStorage.setItem("redApple", Number(countRedAppleInCheckout));
         window.localStorage.setItem("totalNumberOfFruits", countRedAppleInCheckout + Number(window.localStorage.getItem("greenApple")) + Number(window.localStorage.getItem("orange")) + Number(window.localStorage.getItem("banana")) + Number(window.localStorage.getItem("grapes")) + Number(window.localStorage.getItem("honeydewMelon")) + Number(window.localStorage.getItem("watermelon")) + Number(window.localStorage.getItem("lemon")) + Number(window.localStorage.getItem("mango")) + Number(window.localStorage.getItem("pomegranate")));        
         displayTotalNumberOfFruitsInCheckout();
-        displayTotalPriceInCheckout();
-        removeRedAppleCardInCheckoutIfChangedToZero();
-    }
-}
-
-function removeRedAppleCardInCheckoutIfChangedToZero(){
-    let countRedAppleInCheckout = Number(window.localStorage.getItem("redApple"));
-    const displayRedAppleCard = document.getElementById("redAppleCard");
-    if (countRedAppleInCheckout == 0){
-        displayRedAppleCard.style.display = "none";
+        fetchPriceOnCheckout();
     }
 }
 
 //green apple
 function plusGreenAppleInCheckout(){
-    const displayGreenAppleInCheckout = document.getElementById("countGreenAppleInCheckout");
-    let countGreenAppleInCheckout = Number(window.localStorage.getItem("greenApple"));
-    countGreenAppleInCheckout++;
-    displayGreenAppleInCheckout.textContent = countGreenAppleInCheckout;
-    window.localStorage.setItem("greenApple", Number(countGreenAppleInCheckout));
-    window.localStorage.setItem("totalNumberOfFruits", Number(window.localStorage.getItem("redApple")) + countGreenAppleInCheckout + Number(window.localStorage.getItem("orange")) + Number(window.localStorage.getItem("banana")) + Number(window.localStorage.getItem("grapes")) + Number(window.localStorage.getItem("honeydewMelon")) + Number(window.localStorage.getItem("watermelon")) + Number(window.localStorage.getItem("lemon")) + Number(window.localStorage.getItem("mango")) + Number(window.localStorage.getItem("pomegranate")));    
-    displayTotalNumberOfFruitsInCheckout();
-    displayTotalPriceInCheckout();
+    fetchAvailableAmountGreenApplesFromServerInCheckOut();
+    fetchPriceOnCheckout();
 }
 
 function minusGreenAppleInCheckout(){
@@ -652,29 +1092,14 @@ function minusGreenAppleInCheckout(){
         window.localStorage.setItem("greenApple", Number(countGreenAppleInCheckout));
         window.localStorage.setItem("totalNumberOfFruits", Number(window.localStorage.getItem("redApple")) + countGreenAppleInCheckout + Number(window.localStorage.getItem("orange")) + Number(window.localStorage.getItem("banana")) + Number(window.localStorage.getItem("grapes")) + Number(window.localStorage.getItem("honeydewMelon")) + Number(window.localStorage.getItem("watermelon")) + Number(window.localStorage.getItem("lemon")) + Number(window.localStorage.getItem("mango")) + Number(window.localStorage.getItem("pomegranate")));        
         displayTotalNumberOfFruitsInCheckout();
-        displayTotalPriceInCheckout();
-        removeGreenAppleCardInCheckoutIfChangedToZero();
-    }
-}
-
-function removeGreenAppleCardInCheckoutIfChangedToZero(){
-    let countGreenAppleInCheckout = Number(window.localStorage.getItem("greenApple"));
-    const displayGreenAppleCard = document.getElementById("greenAppleCard");
-    if(countGreenAppleInCheckout == 0){
-        displayGreenAppleCard.style.display = "none";
+        fetchPriceOnCheckout();
     }
 }
 
 //orange
 function plusOrangeInCheckout(){
-    const displayOrangeInCheckout = document.getElementById("countOrangeInCheckout");
-    let countOrangeInCheckout = Number(window.localStorage.getItem("orange"));
-    countOrangeInCheckout++;
-    displayOrangeInCheckout.textContent = countOrangeInCheckout;
-    window.localStorage.setItem("orange", Number(countOrangeInCheckout));
-    window.localStorage.setItem("totalNumberOfFruits", Number(window.localStorage.getItem("redApple")) + Number(window.localStorage.getItem("greenApple")) + countOrangeInCheckout + Number(window.localStorage.getItem("banana")) + Number(window.localStorage.getItem("grapes")) + Number(window.localStorage.getItem("honeydewMelon")) + Number(window.localStorage.getItem("watermelon")) + Number(window.localStorage.getItem("lemon")) + Number(window.localStorage.getItem("mango")) + Number(window.localStorage.getItem("pomegranate")));    
-    displayTotalNumberOfFruitsInCheckout();
-    displayTotalPriceInCheckout();
+    fetchAvailableAmountOrangesFromServerInCheckOut();
+    fetchPriceOnCheckout();
 }
 
 function minusOrangeInCheckout(){
@@ -686,29 +1111,14 @@ function minusOrangeInCheckout(){
         window.localStorage.setItem("orange", Number(countOrangeInCheckout));
         window.localStorage.setItem("totalNumberOfFruits", Number(window.localStorage.getItem("redApple")) + Number(window.localStorage.getItem("greenApple")) + countOrangeInCheckout + Number(window.localStorage.getItem("banana")) + Number(window.localStorage.getItem("grapes")) + Number(window.localStorage.getItem("honeydewMelon")) + Number(window.localStorage.getItem("watermelon")) + Number(window.localStorage.getItem("lemon")) + Number(window.localStorage.getItem("mango")) + Number(window.localStorage.getItem("pomegranate")));        
         displayTotalNumberOfFruitsInCheckout();
-        displayTotalPriceInCheckout();
-        removeOrangeCardInCheckoutIfChangedToZero();
-    }
-}
-
-function removeOrangeCardInCheckoutIfChangedToZero(){
-    let countOrangeInCheckout = Number(window.localStorage.getItem("orange"));
-    const displayOrangeCard = document.getElementById("orangeCard");
-    if (countOrangeInCheckout == 0){
-        displayOrangeCard.style.display = "none";
+        fetchPriceOnCheckout();
     }
 }
 
 //banana
 function plusBananaInCheckout(){
-    const displayBananaInCheckout = document.getElementById("countBananaInCheckout");
-    let countBananaInCheckout = Number(window.localStorage.getItem("banana"));
-    countBananaInCheckout++;
-    displayBananaInCheckout.textContent = countBananaInCheckout;
-    window.localStorage.setItem("banana", Number(countBananaInCheckout));
-    window.localStorage.setItem("totalNumberOfFruits", Number(window.localStorage.getItem("redApple")) + Number(window.localStorage.getItem("greenApple")) + Number(window.localStorage.getItem("orange")) + countBananaInCheckout + Number(window.localStorage.getItem("grapes")) + Number(window.localStorage.getItem("honeydewMelon")) + Number(window.localStorage.getItem("watermelon")) + Number(window.localStorage.getItem("lemon")) + Number(window.localStorage.getItem("mango")) + Number(window.localStorage.getItem("pomegranate")));    
-    displayTotalNumberOfFruitsInCheckout();
-    displayTotalPriceInCheckout();
+    fetchAvailableAmountBananasFromServerInCheckOut();
+    fetchPriceOnCheckout();
 }
 
 function minusBananaInCheckout(){
@@ -720,29 +1130,14 @@ function minusBananaInCheckout(){
         window.localStorage.setItem("banana", Number(countBananaInCheckout));
         window.localStorage.setItem("totalNumberOfFruits", Number(window.localStorage.getItem("redApple")) + Number(window.localStorage.getItem("greenApple")) + Number(window.localStorage.getItem("orange")) + countBananaInCheckout + Number(window.localStorage.getItem("grapes")) + Number(window.localStorage.getItem("honeydewMelon")) + Number(window.localStorage.getItem("watermelon")) + Number(window.localStorage.getItem("lemon")) + Number(window.localStorage.getItem("mango")) + Number(window.localStorage.getItem("pomegranate")));        
         displayTotalNumberOfFruitsInCheckout();
-        displayTotalPriceInCheckout();
-        removeBananaCardInCheckoutIfChangedToZero();
-    }
-}
-
-function removeBananaCardInCheckoutIfChangedToZero(){
-    let countBananaInCheckout = Number(window.localStorage.getItem("banana"));
-    const displayBananaCard = document.getElementById("bananaCard");
-    if (countBananaInCheckout == 0){
-        displayBananaCard.style.display = "none";
+        fetchPriceOnCheckout();
     }
 }
 
 //grapes
 function plusGrapesInCheckout(){
-    const displayGrapesInCheckout = document.getElementById("countGrapesInCheckout");
-    let countGrapesInCheckout = Number(window.localStorage.getItem("grapes"));
-    countGrapesInCheckout++;
-    displayGrapesInCheckout.textContent = countGrapesInCheckout;
-    window.localStorage.setItem("grapes", Number(countGrapesInCheckout));
-    window.localStorage.setItem("totalNumberOfFruits", Number(window.localStorage.getItem("redApple")) + Number(window.localStorage.getItem("greenApple")) + Number(window.localStorage.getItem("orange")) + Number(window.localStorage.getItem("banana")) + countGrapesInCheckout + Number(window.localStorage.getItem("honeydewMelon")) + Number(window.localStorage.getItem("watermelon")) + Number(window.localStorage.getItem("lemon")) + Number(window.localStorage.getItem("mango")) + Number(window.localStorage.getItem("pomegranate")));    
-    displayTotalNumberOfFruitsInCheckout();
-    displayTotalPriceInCheckout();
+    fetchAvailableAmountGrapesFromServerInCheckOut();
+    fetchPriceOnCheckout();
 }
 
 function minusGrapesInCheckout(){
@@ -754,29 +1149,14 @@ function minusGrapesInCheckout(){
         window.localStorage.setItem("grapes", Number(countGrapesInCheckout));
         window.localStorage.setItem("totalNumberOfFruits", Number(window.localStorage.getItem("redApple")) + Number(window.localStorage.getItem("greenApple")) + Number(window.localStorage.getItem("orange")) + Number(window.localStorage.getItem("banana")) + countGrapesInCheckout + Number(window.localStorage.getItem("honeydewMelon")) + Number(window.localStorage.getItem("watermelon")) + Number(window.localStorage.getItem("lemon")) + Number(window.localStorage.getItem("mango")) + Number(window.localStorage.getItem("pomegranate")));        
         displayTotalNumberOfFruitsInCheckout();
-        displayTotalPriceInCheckout();
-        removeGrapesCardInCheckoutIfChangedToZero();
-    }
-}
-
-function removeGrapesCardInCheckoutIfChangedToZero(){
-    let countGrapesInCheckout = Number(window.localStorage.getItem("grapes"));
-    const displayGrapesCard = document.getElementById("grapesCard");
-    if (countGrapesInCheckout == 0){
-        displayGrapesCard.style.display = "none";
+        fetchPriceOnCheckout();
     }
 }
 
 //honeydew melon
 function plusHoneydewMelonInCheckout(){
-    const displayHoneydewMelonInCheckout = document.getElementById("countHoneydewMelonInCheckout");
-    let countHoneydewMelonInCheckout = Number(window.localStorage.getItem("honeydewMelon"));
-    countHoneydewMelonInCheckout++;
-    displayHoneydewMelonInCheckout.textContent = countHoneydewMelonInCheckout;
-    window.localStorage.setItem("honeydewMelon", Number(countHoneydewMelonInCheckout));
-    window.localStorage.setItem("totalNumberOfFruits", Number(window.localStorage.getItem("redApple")) + Number(window.localStorage.getItem("greenApple")) + Number(window.localStorage.getItem("orange")) + Number(window.localStorage.getItem("banana")) + Number(window.localStorage.getItem("grapes")) + countHoneydewMelonInCheckout + Number(window.localStorage.getItem("watermelon")) + Number(window.localStorage.getItem("lemon")) + Number(window.localStorage.getItem("mango")) + Number(window.localStorage.getItem("pomegranate")));    
-    displayTotalNumberOfFruitsInCheckout();
-    displayTotalPriceInCheckout();
+    fetchAvailableAmountHoneydewMelonsFromServerInCheckOut();
+    fetchPriceOnCheckout();
 }
 
 function minusHoneydewMelonInCheckout(){
@@ -788,29 +1168,14 @@ function minusHoneydewMelonInCheckout(){
         window.localStorage.setItem("honeydewMelon", Number(countHoneydewMelonInCheckout));
         window.localStorage.setItem("totalNumberOfFruits", Number(window.localStorage.getItem("redApple")) + Number(window.localStorage.getItem("greenApple")) + Number(window.localStorage.getItem("orange")) + Number(window.localStorage.getItem("banana")) + Number(window.localStorage.getItem("grapes")) + countHoneydewMelonInCheckout + Number(window.localStorage.getItem("watermelon")) + Number(window.localStorage.getItem("lemon")) + Number(window.localStorage.getItem("mango")) + Number(window.localStorage.getItem("pomegranate")));        
         displayTotalNumberOfFruitsInCheckout();
-        displayTotalPriceInCheckout();
-        removeHoneydewMelonCardInCheckoutIfChangedToZero();
-    }
-}
-
-function removeHoneydewMelonCardInCheckoutIfChangedToZero(){
-    let countHoneydewMelonInCheckout = Number(window.localStorage.getItem("honeydewMelon"));
-    const displayHoneydewMelonCard = document.getElementById("honeydewMelonCard");
-    if (countHoneydewMelonInCheckout == 0){
-        displayHoneydewMelonCard.style.display = "none";
+        fetchPriceOnCheckout();
     }
 }
 
 //watermelon
 function plusWatermelonInCheckout(){
-    const displayWatermelonInCheckout = document.getElementById("countWatermelonInCheckout");
-    let countWatermelonInCheckout = Number(window.localStorage.getItem("watermelon"));
-    countWatermelonInCheckout++;
-    displayWatermelonInCheckout.textContent = countWatermelonInCheckout;
-    window.localStorage.setItem("watermelon", Number(countWatermelonInCheckout));
-    window.localStorage.setItem("totalNumberOfFruits", Number(window.localStorage.getItem("redApple")) + Number(window.localStorage.getItem("greenApple")) + Number(window.localStorage.getItem("orange")) + Number(window.localStorage.getItem("banana")) + Number(window.localStorage.getItem("grapes")) + Number(window.localStorage.getItem("honeydewMelon")) + countWatermelonInCheckout + Number(window.localStorage.getItem("lemon")) + Number(window.localStorage.getItem("mango")) + Number(window.localStorage.getItem("pomegranate")));    
-    displayTotalNumberOfFruitsInCheckout();
-    displayTotalPriceInCheckout();
+    fetchAvailableAmountWatermelonsFromServerInCheckOut();
+    fetchPriceOnCheckout();
 }
 
 function minusWatermelonInCheckout(){
@@ -822,29 +1187,14 @@ function minusWatermelonInCheckout(){
         window.localStorage.setItem("watermelon", Number(countWatermelonInCheckout));
         window.localStorage.setItem("totalNumberOfFruits", Number(window.localStorage.getItem("redApple")) + Number(window.localStorage.getItem("greenApple")) + Number(window.localStorage.getItem("orange")) + Number(window.localStorage.getItem("banana")) + Number(window.localStorage.getItem("grapes")) + Number(window.localStorage.getItem("honeydewMelon")) + countWatermelonInCheckout + Number(window.localStorage.getItem("lemon")) + Number(window.localStorage.getItem("mango")) + Number(window.localStorage.getItem("pomegranate")));        
         displayTotalNumberOfFruitsInCheckout();
-        displayTotalPriceInCheckout();
-        removeWatermelonCardInCheckoutIfChangedToZero();
-    }
-}
-
-function removeWatermelonCardInCheckoutIfChangedToZero(){
-    let countWatermelonInCheckout = Number(window.localStorage.getItem("watermelon"));
-    const displayWatermelonCard = document.getElementById("watermelonCard");
-    if (countWatermelonInCheckout == 0){
-        displayWatermelonCard.style.display = "none";
+        fetchPriceOnCheckout();
     }
 }
 
 //lemon
 function plusLemonInCheckout(){
-    const displayLemonInCheckout = document.getElementById("countLemonInCheckout");
-    let countLemonInCheckout = Number(window.localStorage.getItem("lemon"));
-    countLemonInCheckout++;
-    displayLemonInCheckout.textContent = countLemonInCheckout;
-    window.localStorage.setItem("lemon", Number(countLemonInCheckout));
-    window.localStorage.setItem("totalNumberOfFruits", Number(window.localStorage.getItem("redApple")) + Number(window.localStorage.getItem("greenApple")) + Number(window.localStorage.getItem("orange")) + Number(window.localStorage.getItem("banana")) + Number(window.localStorage.getItem("grapes")) + Number(window.localStorage.getItem("honeydewMelon")) + Number(window.localStorage.getItem("watermelon")) + countLemonInCheckout + Number(window.localStorage.getItem("mango")) + Number(window.localStorage.getItem("pomegranate")));    
-    displayTotalNumberOfFruitsInCheckout();
-    displayTotalPriceInCheckout();
+    fetchAvailableAmountLemonsFromServerInCheckOut();
+    fetchPriceOnCheckout();
 }
 
 function minusLemonInCheckout(){
@@ -856,29 +1206,14 @@ function minusLemonInCheckout(){
         window.localStorage.setItem("lemon", Number(countLemonInCheckout));
         window.localStorage.setItem("totalNumberOfFruits", Number(window.localStorage.getItem("redApple")) + Number(window.localStorage.getItem("greenApple")) + Number(window.localStorage.getItem("orange")) + Number(window.localStorage.getItem("banana")) + Number(window.localStorage.getItem("grapes")) + Number(window.localStorage.getItem("honeydewMelon")) + Number(window.localStorage.getItem("watermelon")) + countLemonInCheckout + Number(window.localStorage.getItem("mango")) + Number(window.localStorage.getItem("pomegranate")));        
         displayTotalNumberOfFruitsInCheckout();
-        displayTotalPriceInCheckout();
-        removeLemonCardInCheckoutIfChangedToZero();
-    }
-}
-
-function removeLemonCardInCheckoutIfChangedToZero(){
-    let countLemonInCheckout = Number(window.localStorage.getItem("lemon"));
-    const displayLemonCard = document.getElementById("lemonCard");
-    if (countLemonInCheckout == 0){
-        displayLemonCard.style.display = "none";
+        fetchPriceOnCheckout();
     }
 }
 
 //mango
 function plusMangoInCheckout(){
-    const displayMangoInCheckout = document.getElementById("countMangoInCheckout");
-    let countMangoInCheckout = Number(window.localStorage.getItem("mango"));
-    countMangoInCheckout++;
-    displayMangoInCheckout.textContent = countMangoInCheckout;
-    window.localStorage.setItem("mango", Number(countMangoInCheckout));
-    window.localStorage.setItem("totalNumberOfFruits", Number(window.localStorage.getItem("redApple")) + Number(window.localStorage.getItem("greenApple")) + Number(window.localStorage.getItem("orange")) + Number(window.localStorage.getItem("banana")) + Number(window.localStorage.getItem("grapes")) + Number(window.localStorage.getItem("honeydewMelon")) + Number(window.localStorage.getItem("watermelon")) + Number(window.localStorage.getItem("lemon")) + countMangoInCheckout + Number(window.localStorage.getItem("pomegranate")));    
-    displayTotalNumberOfFruitsInCheckout();
-    displayTotalPriceInCheckout();
+    fetchAvailableAmountMangosFromServerInCheckOut();
+    fetchPriceOnCheckout();
 }
 
 function minusMangoInCheckout(){
@@ -890,29 +1225,14 @@ function minusMangoInCheckout(){
         window.localStorage.setItem("mango", Number(countMangoInCheckout));
         window.localStorage.setItem("totalNumberOfFruits", Number(window.localStorage.getItem("redApple")) + Number(window.localStorage.getItem("greenApple")) + Number(window.localStorage.getItem("orange")) + Number(window.localStorage.getItem("banana")) + Number(window.localStorage.getItem("grapes")) + Number(window.localStorage.getItem("honeydewMelon")) + Number(window.localStorage.getItem("watermelon")) + Number(window.localStorage.getItem("lemon")) + countMangoInCheckout + Number(window.localStorage.getItem("pomegranate")));        
         displayTotalNumberOfFruitsInCheckout();
-        displayTotalPriceInCheckout();
-        removeMangoCardInCheckoutIfChangedToZero();
-    }
-}
-
-function removeMangoCardInCheckoutIfChangedToZero(){
-    let countMangoInCheckout = Number(window.localStorage.getItem("mango"));
-    const displayMangoCard = document.getElementById("mangoCard");
-    if (countMangoInCheckout == 0){
-        displayMangoCard.style.display = "none";
+        fetchPriceOnCheckout();
     }
 }
 
 //pomegranate
 function plusPomegranateInCheckout(){
-    const displayPomegranateInCheckout = document.getElementById("countPomegranateInCheckout");
-    let countPomegranateInCheckout = Number(window.localStorage.getItem("pomegranate"));
-    countPomegranateInCheckout++;
-    displayPomegranateInCheckout.textContent = countPomegranateInCheckout;
-    window.localStorage.setItem("pomegranate", Number(countPomegranateInCheckout));
-    window.localStorage.setItem("totalNumberOfFruits", Number(window.localStorage.getItem("redApple")) + Number(window.localStorage.getItem("greenApple")) + Number(window.localStorage.getItem("orange")) + Number(window.localStorage.getItem("banana")) + Number(window.localStorage.getItem("grapes")) + Number(window.localStorage.getItem("honeydewMelon")) + Number(window.localStorage.getItem("watermelon")) + Number(window.localStorage.getItem("lemon")) + Number(window.localStorage.getItem("mango")) + countPomegranateInCheckout);    
-    displayTotalNumberOfFruitsInCheckout();
-    displayTotalPriceInCheckout();
+    fetchAvailableAmountPomegranatesFromServerInCheckOut();
+    fetchPriceOnCheckout();
 }
 
 function minusPomegranateInCheckout(){
@@ -924,42 +1244,171 @@ function minusPomegranateInCheckout(){
         window.localStorage.setItem("pomegranate", Number(countPomegranateInCheckout));
         window.localStorage.setItem("totalNumberOfFruits", Number(window.localStorage.getItem("redApple")) + Number(window.localStorage.getItem("greenApple")) + Number(window.localStorage.getItem("orange")) + Number(window.localStorage.getItem("banana")) + Number(window.localStorage.getItem("grapes")) + Number(window.localStorage.getItem("honeydewMelon")) + Number(window.localStorage.getItem("watermelon")) + Number(window.localStorage.getItem("lemon")) + Number(window.localStorage.getItem("mango")) + countPomegranateInCheckout);        
         displayTotalNumberOfFruitsInCheckout();
-        displayTotalPriceInCheckout();
-        removePomegranateCardInCheckoutIfChangedToZero();
-    }
-}
-
-function removePomegranateCardInCheckoutIfChangedToZero(){
-    let countPomegranateInCheckout = Number(window.localStorage.getItem("pomegranate"));
-    const displayPomegranateCard = document.getElementById("pomegranateCard");
-    if (countPomegranateInCheckout == 0){
-        displayPomegranateCard.style.display = "none";
+        fetchPriceOnCheckout();
     }
 }
 
 
-//calculate and display total price in checkout
-function displayTotalPriceInCheckout(){
-    const priceRedAppleInNumber = Number(allFruitsInStock[0].price);
-    const priceGreenAppleInNumber = Number(allFruitsInStock[1].price);
-    const priceOrangeInNumber = Number(allFruitsInStock[2].price);
-    const priceBananaInNumber = Number(allFruitsInStock[3].price);
-    const priceGrapesInNumber = Number(allFruitsInStock[4].price);
-    const priceHoneydewMelonInNumber = Number(allFruitsInStock[5].price);
-    const priceWatermelonInNumber = Number(allFruitsInStock[6].price);
-    const priceLemonInNumber = Number(allFruitsInStock[7].price);
-    const priceMangoInNumber = Number(allFruitsInStock[8].price);
-    const pricePomegranateInNumber = Number(allFruitsInStock[9].price);
-    let numberOfRedApplesInCart = Number(window.localStorage.getItem("redApple"));
-    let numberOfGreenApplesInCart = Number(window.localStorage.getItem("greenApple"));
-    let numberOfOrangesInCart = Number(window.localStorage.getItem("orange"));
-    let numberOfBananasInCart = Number(window.localStorage.getItem("banana"));
-    let numberOfGrapesInCart = Number(window.localStorage.getItem("grapes"));
-    let numberOfHoneydewMelonsInCart = Number(window.localStorage.getItem("honeydewMelon"));
-    let numberOfWatermelonsInCart = Number(window.localStorage.getItem("watermelon"));
-    let numberOfLemonsInCart = Number(window.localStorage.getItem("lemon"));
-    let numberOfMangosInCart = Number(window.localStorage.getItem("mango"));
-    let numberOfPomegranatesInCart = Number(window.localStorage.getItem("pomegranate"));
-    const totalCost = ((numberOfRedApplesInCart * priceRedAppleInNumber) + (numberOfGreenApplesInCart * priceGreenAppleInNumber) + (numberOfOrangesInCart * priceOrangeInNumber) + (numberOfBananasInCart * priceBananaInNumber) + (numberOfGrapesInCart * priceGrapesInNumber) + (numberOfHoneydewMelonsInCart * priceHoneydewMelonInNumber) + (numberOfWatermelonsInCart * priceWatermelonInNumber) + (numberOfLemonsInCart * priceLemonInNumber) + (numberOfMangosInCart * priceMangoInNumber) + (numberOfPomegranatesInCart * pricePomegranateInNumber));
-    document.getElementById("totalCost").textContent = totalCost;
+//fetch fruit price, calculate and display total price in checkout
+function fetchPriceOnCheckout(){
+    let fruitData = {
+        fruits: [
+            {
+                fruit: "red apple",
+                amount: Number(window.localStorage.getItem("redApple"))
+            },
+            {
+                fruit: "green apple",
+                amount: Number(window.localStorage.getItem("greenApple"))
+            },
+            {
+                fruit: "orange",
+                amount: Number(window.localStorage.getItem("orange"))
+            },
+            {
+                fruit: "banana",
+                amount: Number(window.localStorage.getItem("banana"))
+            },
+            {
+                fruit: "grapes",
+                amount: Number(window.localStorage.getItem("grapes"))
+            },
+            {
+                fruit: "honeydew melon",
+                amount: Number(window.localStorage.getItem("honeydew melon"))
+            },
+            {
+                fruit: "watermelon",
+                amount: Number(window.localStorage.getItem("watermelon"))
+            },
+            {
+                fruit: "lemon",
+                amount: Number(window.localStorage.getItem("lemon"))
+            },
+            {
+                fruit: "mango",
+                amount: Number(window.localStorage.getItem("mango"))
+            },
+            {
+                fruit: "pomegranate",
+                amount: Number(window.localStorage.getItem("pomegranate"))
+            }
+        ]
+    }
+    fetch("http://localhost:3000/price", {
+        method: "post",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(fruitData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById("priceRedAppleInCheckout").textContent = data[0].price;
+        document.getElementById("priceGreenAppleInCheckout").textContent = data[1].price;
+        document.getElementById("priceOrangeInCheckout").textContent = data[2].price;
+        document.getElementById("priceBananaInCheckout").textContent = data[3].price;
+        document.getElementById("priceGrapesInCheckout").textContent = data[4].price;
+        document.getElementById("priceHoneydewMelonInCheckout").textContent = data[5].price;
+        document.getElementById("priceWatermelonInCheckout").textContent = data[6].price;
+        document.getElementById("priceLemonInCheckout").textContent = data[7].price;
+        document.getElementById("priceMangoInCheckout").textContent = data[8].price;
+        document.getElementById("pricePomegranateInCheckout").textContent = data[9].price;
+        displayRedAppleAddedToShoppingCartInCheckout();
+        displayGreenAppleAddedToShoppingCartInCheckout();
+        displayOrangeAddedToShoppingCartInCheckout();
+        displayBananaAddedToShoppingCartInCheckout();
+        displayGrapesAddedToShoppingCartInCheckout();
+        displayHoneydewMelonAddedToShoppingCartInCheckout();
+        displayWatermelonAddedToShoppingCartInCheckout();
+        displayLemonAddedToShoppingCartInCheckout();
+        displayMangoAddedToShoppingCartInCheckout();
+        displayPomegranateAddedToShoppingCartInCheckout();
+        const priceRedAppleInNumber = data[0].price;
+        const priceGreenAppleInNumber = data[1].price;
+        const priceOrangeInNumber = data[2].price;
+        const priceBananaInNumber = data[3].price;
+        const priceGrapesInNumber = data[4].price;
+        const priceHoneydewMelonInNumber = data[5].price;
+        const priceWatermelonInNumber = data[6].price;
+        const priceLemonInNumber = data[7].price;
+        const priceMangoInNumber = data[8].price;
+        const pricePomegranateInNumber = data[9].price;
+        let numberOfRedApplesInCart = Number(window.localStorage.getItem("redApple"));
+        let numberOfGreenApplesInCart = Number(window.localStorage.getItem("greenApple"));
+        let numberOfOrangesInCart = Number(window.localStorage.getItem("orange"));
+        let numberOfBananasInCart = Number(window.localStorage.getItem("banana"));
+        let numberOfGrapesInCart = Number(window.localStorage.getItem("grapes"));
+        let numberOfHoneydewMelonsInCart = Number(window.localStorage.getItem("honeydewMelon"));
+        let numberOfWatermelonsInCart = Number(window.localStorage.getItem("watermelon"));
+        let numberOfLemonsInCart = Number(window.localStorage.getItem("lemon"));
+        let numberOfMangosInCart = Number(window.localStorage.getItem("mango"));
+        let numberOfPomegranatesInCart = Number(window.localStorage.getItem("pomegranate"));
+        const totalCost = ((numberOfRedApplesInCart * priceRedAppleInNumber) + (numberOfGreenApplesInCart * priceGreenAppleInNumber) + (numberOfOrangesInCart * priceOrangeInNumber) + (numberOfBananasInCart * priceBananaInNumber) + (numberOfGrapesInCart * priceGrapesInNumber) + (numberOfHoneydewMelonsInCart * priceHoneydewMelonInNumber) + (numberOfWatermelonsInCart * priceWatermelonInNumber) + (numberOfLemonsInCart * priceLemonInNumber) + (numberOfMangosInCart * priceMangoInNumber) + (numberOfPomegranatesInCart * pricePomegranateInNumber));
+        document.getElementById("totalCost").textContent = totalCost;
+    })
+    .catch(err => console.log("error"))
+}
+
+
+//check available amount when checking out
+function checkoutStatus(){
+    fetchAvailableAmountFromServer();
+}
+
+function fetchAvailableAmountFromServer(){
+    let fruitData = {
+        fruits: [
+            {
+                fruit: "red apple",
+                amount: Number(window.localStorage.getItem("redApple"))
+            },
+            {
+                fruit: "green apple",
+                amount: Number(window.localStorage.getItem("greenApple"))
+            },
+            {
+                fruit: "orange",
+                amount: Number(window.localStorage.getItem("orange"))
+            },
+            {
+                fruit: "banana",
+                amount: Number(window.localStorage.getItem("banana"))
+            },
+            {
+                fruit: "grapes",
+                amount: Number(window.localStorage.getItem("grapes"))
+            },
+            {
+                fruit: "honeydew melon",
+                amount: Number(window.localStorage.getItem("honeydewMelon"))
+            },
+            {
+                fruit: "watermelon",
+                amount: Number(window.localStorage.getItem("watermelon"))
+            },
+            {
+                fruit: "lemon",
+                amount: Number(window.localStorage.getItem("lemon"))
+            },
+            {
+                fruit: "mango",
+                amount: Number(window.localStorage.getItem("mango"))
+            },
+            {
+                fruit: "pomegranate",
+                amount: Number(window.localStorage.getItem("pomegranate"))
+            }
+        ]
+    }
+    fetch("http://localhost:3000/checkout", {
+        method: "post",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(fruitData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data !== "success"){
+           alert(data)
+        }
+    })
+    .catch(err => console.log("error"))
 }
