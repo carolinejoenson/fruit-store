@@ -1,0 +1,22 @@
+.modalContainer {
+    display: block;
+    position: fixed;
+    z-index: 1;
+    right: 60px;
+    top: 60px;
+    width: 175px; 
+    height: 145px; 
+    overflow: auto; 
+    background: rgb(255, 255, 204);
+    border: 1px solid rgb(136, 136, 136);
+    box-shadow: 7px 5px 5px rgb(136, 136, 136);
+}
+
+.modalContent {
+    display: flex;
+    justify-content: center;
+    color: black;
+    padding-top: 35px;
+    font-size: 0.9em;
+}
+

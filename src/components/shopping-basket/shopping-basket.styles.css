@@ -1,0 +1,6 @@
+.shoppingBasket {
+    float: right;
+    padding-top: 30px;
+    padding-right: 30px;
+    cursor: pointer;
+}

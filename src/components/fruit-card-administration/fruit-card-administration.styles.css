@@ -1,0 +1,39 @@
+.cardWithDetailsForAdministration {
+    margin: 40px;
+    text-align: center;
+    display: list-item;
+    font-size: 1em;
+    border: 1px solid black;
+    margin-left: 25%;
+    margin-right: 25%;
+}
+
+.objectDetails {
+    list-style: none;
+    padding: 5px;
+    display: flex;
+    justify-content: center;
+}
+
+.inputAdministrationName {
+    width: 150px;
+}
+
+.inputAdministrationPrice {
+    width: 75px;
+}
+
+.inputAdministrationStockBalance {
+    width: 75px;
+}
+
+.cardWithDetailsForAdministration::marker {
+    color: white;
+}
+
+.cardWithDetailsForAdministration button {
+    padding: 10px;
+    margin-bottom: 20px;
+    font-size: 1em;
+    cursor: pointer;
+}
